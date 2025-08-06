@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>CineTrack</title>
+    <link rel="stylesheet" href="assets/css/teste.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="CineTrack">
+    <meta property="og:description"
+        content="Conheça o site que irá te auxiliar com uma gama surpreendente de recursos para que você possa facilmente navegar por filmes e séries com base em categorias,                    avaliações e muito mais!">
+    <meta property="og:image" content="imgs/ogimage.jpg">
+    <meta property=" og:url" content="https://www.cinetrack.com">
+    <meta property="og:type" content="website">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="jquery-3.7.1.js"></script>
+    <script src="assets/scripts/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.polyfills.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+
+</head>
+
+<body class="fundo">
+
+
+
+    <!-- Header xs-sm-->
+    <header class="d-lg-none d-flex align-items-center cabcel position-fixed justify-content-evenly">
+        <a href="index.html"><img class="imgcabdesk" src="imgs/novalogo.png"></a>
+        <div class="position-relative">
+            <input type="text" class="inputsearchcel" placeholder="Procurar">
+            <i class="fa-solid fa-magnifying-glass position-absolute iconsearchcel"></i>
+        </div>
+        <i id="menuceljs" class="fa-solid fa-bars menucel"></i>
+        <i class="fa-solid fa-filter d-md-none"></i>
+    </header>
+
+    <!-- Header md+-->
+    <header class="d-none d-lg-flex align-items-center position-fixed  justify-content-evenly cabdesk">
+        <div class="d-flex align-items-center gap-4">
+            <a href="index.html"><img class="imgcabdesk" src="imgs/novalogo.png"></a>
+            <button class="buttoncabdesk"><i class="fa-solid fa-house"></i> Home</button>
+            <button class="buttoncabdesk"><i class="fa-solid fa-thumbs-up"></i> Curtidos</button>
+            <button class="buttoncabdesk"><i class="fa-solid fa-heart"></i> Favoritos</button>
+            <button class="buttoncabdesk"><i class="fa-solid fa-clock"></i> Later</button>
+        </div>
+        <div class="position-relative d-flex">
+            <input id="inputdesk" class="inputsearchdesk ms-3" type="text" placeholder="Procurar">
+            <i class="fa-solid fa-magnifying-glass iconsearchdesk position-absolute"></i>
+        </div>
+        <a id="buttonfilme"><button id="btnenterdeskid" class="btnenterdesk ms-4">Pesquisar</button></a>
+        <i class="fa-solid fa-user fa-2x ms-5"></i>
+    </header>
+    <script>
+
+        document.getElementById("btnenterdeskid").addEventListener('click', function(){
+
+            let nome = document.getElementById("inputdesk").value;
+            let filme = items.find(function(objeto) {return objeto.titulo == nome})
+            dados.filme = filme;
+            document.getElementById("buttonfilme").setAttribute("href", `detalhes.html?id=${dados.filme.id}`)
+
+        })
+
+    </script>
+
+
+    <div id="topo">
+
+    </div>
+
+    <header id="meucabcelmenu" class="d-lg-none d-flex align-items-center cabcelmenu  position-fixed justify-content-center">
+        <div  class="d-flex align-items-center p-2 gap-3 contentmenucel">
+            <button class="buttonmenucel"><i class="fa-solid fa-thumbs-up"></i> Curtidos</button>
+            <button class="buttonmenucel"><i class="fa-solid fa-heart"></i> Favoritos</button>
+            <button class="buttonmenucel"><i class="fa-solid fa-clock"></i> Later</button>
+            <i class="fa-solid fa-user fa-2x"></i>
+            <i id="menuexit" class="fa-solid fa-circle-xmark fa-2x"></i>
+        </div>
+
+    </header>
+
+    <section id="meubg">
+        <div id="bgfade">
+            <div id="background">
+
+            </div>
+
+            </div>
+            <div id="bgcontent" style="width: 100%; position: relative; bottom: 400px; padding-left: 30px;">
+
+            </div>
+        </div>
+    </section>
+
+    <main class="principal">
+
+
+
+        <section class="position-relative mt-5" id="controlsfade" data-aos="fade-up">
+            <h3 class="mx-5 ps-2" style="color: white; border-left: 1px solid blue;">FILMES</h3>
+            <div id="conteudoalined" class="d-flex gap-3 mx-5 py-5 alinedfade" style="overflow-x: scroll; scrollbar-width: none; scroll-behavior: smooth;">
+
+            </div>
+            <i class="fa-solid fa-arrow-right position-absolute controls" id="gonext" style="right: 5%;padding: 15px;border-radius: 9999px; bottom: 50%; color: white;"></i>
+            <i class="fa-solid fa-arrow-left position-absolute controls" id="goprev" style="left: 5%;padding: 15px;border-radius: 9999px; bottom: 50%; color: white;"></i>
+        </section>
+        <script>
+
+
+            let html = '';
+            const apiKey = '4537245f2774a4c9e3b2e569a681bcc1';
+            fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`)
+                .then(response => response.json())
+                .then(items => {
+
+                
+                let conteudoalined = document.getElementById('conteudoalined');
+                items.results.forEach(item => {
+                    
+                    html+=`
+                    <article class="">
+                        <a href="moviesdetails.html?id=${item.id}"><img src="https://image.tmdb.org/t/p/w200${item.poster_path}" class="imgdestaque" style="width: 170px; height: 250px"></a>
+                        <p class="conteudobox" style="color: white; margin-bottom: 0; margin-top: 10px">${item.title}</p>
+                        <div class="position-relative" style="bottom: 10px">
+                            <i class="fa-solid fa-star" style="color: yellow; font-size: 10px"><p style="display: inline; font-size: 10px"> ${item.vote_average.toFixed(1)}</p></i>
+                        </div>
+                    </article>
+                    `
+
+                    conteudoalined.innerHTML = html;
+                })
+
+                
+
+            })
+
+            goNext = document.getElementById('gonext');
+            goPrev = document.getElementById('goprev');
+            controlsfade = document.getElementById('controlsfade');
+
+            controlsfade.addEventListener('mouseover', function(){
+
+                goNext.style.opacity = '1';
+                goPrev.style.opacity = '1';
+
+            })
+            controlsfade.addEventListener('mouseout', function(){
+
+                goNext.style.opacity = '0';
+                goPrev.style.opacity = '0';
+
+            })
+
+            function atualizarSetas() {
+
+                if(conteudoalined.scrollLeft === 0)
+                {
+                    goPrev.style.display = 'none';
+                }
+                else
+                    goPrev.style.display = 'block';
+
+
+                if(conteudoalined.scrollLeft + conteudoalined.offsetWidth >= conteudoalined.scrollWidth - 1)
+                    goNext.style.display = 'none';
+                else
+                    goNext.style.display = 'block';
+
+            }
+
+            goNext.addEventListener('click', function(){
+
+                conteudoalined.scrollBy({left: 300, behavior: "smooth"});
+
+            })
+
+            goPrev.addEventListener('click', function(){
+
+                conteudoalined.scrollBy({left: -300, behavior: "smooth"})
+
+            })
+
+            setTimeout(atualizarSetas, 300);
+            conteudoalined.addEventListener('scroll', atualizarSetas)
+
+        </script>
+
+        <section class="position-relative mt-5" id="controlsfade2" data-aos="fade-up">
+            <h3 class="mx-5 ps-2" style="color: white; border-left: 1px solid blue;">SÉRIES</h3>
+            <div id="conteudoalined2" class="d-flex gap-3 mx-5 py-5 alinedfade" style="overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;">
+
+            </div>
+            <i class="fa-solid fa-arrow-right position-absolute controls" id="gonext2" style="right: 5%;padding: 15px;border-radius: 9999px; bottom: 50%; color: white;"></i>
+            <i class="fa-solid fa-arrow-left position-absolute controls" id="goprev2" style="left: 5%;padding: 15px;border-radius: 9999px; bottom: 50%; color: white;"></i>
+        </section>
+
+        <script>
+
+            
+            fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`)
+                .then(response => response.json())
+                .then(items => {
+
+                let html = '';
+                let conteudoalined2 = document.getElementById('conteudoalined2');
+                items.results.forEach(item => {
+                    
+                    html+=`
+                    <article class="">
+                        <a href="seriesdetails.html?id=${item.id}"><img src="https://image.tmdb.org/t/p/w200${item.poster_path}" class="imgdestaque" style="width: 170px; height: 250px"></a>
+                        <p class="conteudobox" style="color: white; margin-bottom: 0; margin-top: 10px">${item.name}</p>
+                        <div class="position-relative" style="bottom: 10px">
+                            <i class="fa-solid fa-star" style="color: yellow; font-size: 10px"><p style="display: inline; font-size: 10px"> ${item.vote_average.toFixed(1)}</p></i>
+                        </div>
+                    </article>
+                    `
+
+                    conteudoalined2.innerHTML = html;
+                })
+
+                
+
+            })
+
+            goNext2 = document.getElementById('gonext2');
+            goPrev2 = document.getElementById('goprev2');
+            controlsfade2 = document.getElementById('controlsfade2');
+
+            controlsfade2.addEventListener('mouseover', function(){
+
+                goNext2.style.opacity = '1';
+                goPrev2.style.opacity = '1';
+
+            })
+            controlsfade2.addEventListener('mouseout', function(){
+
+                goNext2.style.opacity = '0';
+                goPrev2.style.opacity = '0';
+
+            })
+
+            function atualizarSetas() {
+
+                if(conteudoalined2.scrollLeft === 0)
+                {
+                    goPrev2.style.display = 'none';
+                }
+                else
+                    goPrev2.style.display = 'block';
+
+
+                if(conteudoalined2.scrollLeft + conteudoalined2.offsetWidth >= conteudoalined2.scrollWidth - 1)
+                    goNext2.style.display = 'none';
+                else
+                    goNext2.style.display = 'block';
+
+            }
+
+            goNext2.addEventListener('click', function(){
+
+                conteudoalined2.scrollBy({left: 300, behavior: "smooth"});
+
+            })
+
+            goPrev2.addEventListener('click', function(){
+
+                conteudoalined2.scrollBy({left: -300, behavior: "smooth"})
+
+            })
+
+            setTimeout(atualizarSetas, 300);
+            conteudoalined2.addEventListener('scroll', atualizarSetas)
+        </script>
+
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+
+        document.getElementById('menuceljs').addEventListener('click', function(){
+
+            document.getElementById('meucabcelmenu').style.opacity = '1'
+            document.getElementById('meucabcelmenu').classList.add('menu-anima')
+            document.getElementById('meucabcelmenu').classList.remove('menu-anima-sobe')
+
+        })
+
+        document.getElementById('menuexit').addEventListener('click', function(){
+
+            document.getElementById('meucabcelmenu').style.opacity = '0';
+            document.getElementById('meucabcelmenu').classList.remove('menu-anima')
+            document.getElementById('meucabcelmenu').classList.add('menu-anima-sobe')
+
+
+
+
+        })
+
+    </script>
+
+    <script>
+        
+        let index = 0;
+        
+        function mudarFundo() {
+
+            fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=4537245f2774a4c9e3b2e569a681bcc1')
+            .then(response => response.json())
+            .then(data => {
+                const top3 = data.results.slice(0,3);
+                const imgback = 'https://image.tmdb.org/t/p/w1280' + top3[index].backdrop_path;
+                let item = top3[index];
+
+                let bgLoop = document.getElementById("background");
+                const bgConteudo = document.getElementById("bgcontent");
+
+                bgLoop.style.backgroundImage = `url('${imgback}')`;
+
+                bgConteudo.innerHTML = `<section id="conteudobg"><div></div><div class="bgdiv" style="position: absolute"><div class="divtitulobg"><p style="color: white; padding: 5px;  border-left: 1px solid blue; " class="titulobg">${item.title}</p></div><div class="iconesbg" style="display: flex; gap: 5px"><p style="color: white; background-color: blue; border-radius: 9999px; padding: 2px 10px"><i class="fa-solid fa-tv" style="padding-right: 2px"></i>${item.tipo}</p><p style="color: white; background-color: blue; border-radius: 9999px; padding: 2px 10px"><i class="fa-solid fa-calendar" style="padding-right: 2px"></i>${item.date_release}</p><p style="color: yellow; background-color: blue; border-radius: 9999px; padding: 2px 10px"><i class="fa-solid fa-star" style="padding-right: 2px; color: yellow"></i>${item.vote_average.toFixed(1)}</p><a href="detalhes.html?id=${item.id}"><button id="btnbg" class="btnmore d-lg-none "style="background-color: blue; border-radius: 10px; border: 1px solid blue; box-shadow: 0 0 10px blue; padding: 10px 10px; color: white; position: relative; bottom: 10px" ><i class="fa-solid fa-play" style="position: relative; right: 5px; top: 0px"></i>More</button></a></div><p class="descricaobg" style="color: white">${item.overview}</p><a href="detalhes.html?id=${item.id}" style="text-decoration: none"><button id="btnbg" class="btnmore d-none d-lg-flex"style="background-color: blue; border-radius: 10px; border: 1px solid blue; box-shadow: 0 0 10px blue; padding: 10px 20px; color: white" ><i class="fa-solid fa-play" style="position: relative; right: 5px; top: 3px"></i>More</button></a><section>`
+                
+                index = (index + 1) % top3.length; 
+            }
+            )
+            function fadeConteudoIn(){
+                document.getElementById('bgcontent').classList.add('fadecontentin');
+                document.getElementById('background').classList.add('fadecontentin');
+            };            
+            function fadeConteudoOut(){
+                document.getElementById('bgcontent').classList.remove('fadecontentin')
+                document.getElementById('background').classList.remove('fadecontentin');
+            }
+            setTimeout(fadeConteudoIn, 500)
+            setTimeout(fadeConteudoOut, 9000)
+
+        }
+        mudarFundo();
+        setInterval(mudarFundo, 10000);
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+        AOS.init({
+
+            once: false
+
+        });
+    </script>
+
+</body>
+
+</html>
